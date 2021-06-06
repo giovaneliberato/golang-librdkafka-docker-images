@@ -1,5 +1,4 @@
-ARG BASE_IMAGE=golang:latest
-FROM $BASE_IMAGE 
+FROM golang:1.14
 
 # Install librdkafka from source
 RUN apt-get update -y

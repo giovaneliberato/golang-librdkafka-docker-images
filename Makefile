@@ -1,29 +1,13 @@
 
-
-
-define _build
-	docker build . --build-arg BASE_IMAGE=golang:$(1) -t giovaneliberato/golang-librdkafka-dynamic:$(1)
+define _generate
+	sed  "s/IMAGE_VERSION/$(1)/g" Dockerfile.base >> generated/Dockerfile.$(1)
 endef
 
-define _push
-	docker push giovaneliberato/golang-librdkafka-dynamic:$(1)
-endef
+docker-files:
+	$(call _generate,1.14)
+	$(call _generate,1.15)
+	$(call _generate,1.16)
+	$(call _generate,latest)
 
-build-1-14:
-	$(call _build,1.14)
-
-build-1-15:
-	$(call _build,1.15)
-
-build-1-16:
-	$(call _build,1.16)
-
-build: build-1-14 build-1-15 build-1-16
-
-push:
-	$(call _push,1.14)
-	$(call _push,1.15)
-	$(call _push,1.16)
-
-.PHONY: build-1-14 build-1-15 build-1-16
+.PHONY: docker-images
 
